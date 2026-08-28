@@ -2,6 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <title>Grekiska äventyret – Το ελληνικό ταξίδι</title>
 <meta name="description" content="Lär dig grekiska genom alfabet, siffror, ord, ljud och sagor.">
 <style>
@@ -29,7 +30,7 @@ header{height:82px;display:flex;align-items:center;justify-content:space-between
 <script>
 const alphabet=[["Α α","Άλφα","🍐","αχλάδι","päron"],["Β β","Βήτα","📖","βιβλίο","bok"],["Γ γ","Γάμμα","🐱","γάτα","katt"],["Δ δ","Δέλτα","🌳","δέντρο","träd"],["Ε ε","Έψιλον","🐘","ελέφαντας","elefant"],["Ζ ζ","Ζήτα","🦓","ζέβρα","zebra"],["Η η","Ήτα","☀️","ήλιος","sol"],["Θ θ","Θήτα","🌊","θάλασσα","hav"],["Ι ι","Γιώτα","🦛","ιπποπόταμος","flodhäst"],["Κ κ","Κάππα","🔑","κλειδί","nyckel"],["Λ λ","Λάμδα","🌷","λουλούδι","blomma"],["Μ μ","Μι","🍎","μήλο","äpple"],["Ν ν","Νι","💧","νερό","vatten"],["Ξ ξ","Ξι","🧝","ξωτικό","troll"],["Ο ο","Όμικρον","☂️","ομπρέλα","paraply"],["Π π","Πι","🦋","πεταλούδα","fjäril"],["Ρ ρ","Ρο","🍑","ροδάκινο","persika"],["Σ σ ς","Σίγμα","🏠","σπίτι","hus"],["Τ τ","Ταυ","🧀","τυρί","ost"],["Υ υ","Ύψιλον","🌍","υδρόγειος","jordglob"],["Φ φ","Φι","🌙","φεγγάρι","måne"],["Χ χ","Χι","❄️","χιόνι","snö"],["Ψ ψ","Ψι","🐟","ψάρι","fisk"],["Ω ω","Ωμέγα","⌚","ώρα","timme"]];
 // Stavningen nedan används bara av datorrösten för ett rent uttal utan ett extra "jota".
-const namesAudio={"Μι":"μη.","Νι":"νη.","Ξι":"ξη.","Πι":"πη.","Φι":"φη.","Χι":"χη.","Ψι":"ψη."};let selected=alphabet[0],built=[],speechRequest=0;const target=["μ","ή","λ","ο"],numberWords=["","ένα","δύο","τρία","τέσσερα","πέντε","έξι","επτά","οκτώ","εννέα","δέκα"];
+const namesAudio={"Μι":"μί.","Νι":"νί.","Ξι":"ξί.","Πι":"πί.","Ταυ":"τάφ.","Φι":"φί.","Χι":"χί.","Ψι":"ψί."};let selected=alphabet[0],built=[],speechRequest=0;const target=["μ","ή","λ","ο"],numberWords=["","ένα","δύο","τρία","τέσσερα","πέντε","έξι","επτά","οκτώ","εννέα","δέκα"];
 function greekVoice(){const voices=speechSynthesis.getVoices();return voices.find(v=>v.lang.toLowerCase()==='el-gr')||voices.find(v=>v.lang.toLowerCase().startsWith('el-'))||voices.find(v=>v.lang.toLowerCase()==='el')||null}
 function waitForGreekVoice(){const ready=greekVoice();if(ready)return Promise.resolve(ready);return new Promise(resolve=>{let done=false;const finish=()=>{if(done)return;const voice=greekVoice();if(voice){done=true;speechSynthesis.removeEventListener('voiceschanged',finish);resolve(voice)}};speechSynthesis.addEventListener('voiceschanged',finish);setTimeout(()=>{if(!done){done=true;speechSynthesis.removeEventListener('voiceschanged',finish);resolve(greekVoice())}},1800)})}
 async function speak(text,rate=.67){if(!('speechSynthesis'in window)){showAudioError();return}const request=++speechRequest;speechSynthesis.cancel();const voice=await waitForGreekVoice();if(request!==speechRequest)return;if(!voice){showAudioError();return}if(typeof audioStatus!=='undefined')audioStatus.textContent='';const u=new SpeechSynthesisUtterance(text);u.lang='el-GR';u.voice=voice;u.rate=rate;u.pitch=1;u.volume=1;speechSynthesis.speak(u)}
